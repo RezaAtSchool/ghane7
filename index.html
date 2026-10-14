@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101326">
+  <title>Game Quest | پروفایل گیمر</title>
+
+  <style>
+    :root {
+      --bg: #101326;
+      --panel: #191d36;
+      --panel-light: #222845;
+      --text: #f4f5ff;
+      --muted: #a6accb;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --blue: #60a5fa;
+      --green: #34d399;
+      --border: #343957;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at top, #27204d 0, transparent 48%),
+        var(--bg);
+      color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 1.9;
+      min-height: 100vh;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(920px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 26px 12px 30px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 14px;
+      border: 1px solid #7660ba;
+      border-radius: 30px;
+      color: #d8ccff;
+      background: #8b5cf61a;
+      font-size: 12px;
+    }
+
+    .hero h1 {
+      font-size: clamp(27px, 5vw, 43px);
+      margin: 14px 0 5px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      color: var(--purple);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 550px;
+      margin: 8px auto;
+    }
+
+    .panel {
+      background: #191d36ed;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 15px 45px #00000018;
+    }
+
+    .panel-title {
+      font-size: 19px;
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      margin: 16px 0 8px;
+    }
+
+    .progress-track {
+      height: 8px;
+      border-radius: 20px;
+      background: #303552;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--purple), var(--pink));
+      transition: width .25s ease;
+    }
+
+    .question {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question:last-of-type {
+      border-bottom: 0;
+    }
+
+    .question h3 {
+      font-size: 15px;
+      margin: 0 0 13px;
+    }
+
+    .question-number {
+      color: var(--purple);
+      margin-left: 6px;
+    }
+
+    .options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #15192f;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      font-size: 13px;
+    }
+
+    .option:hover {
+      border-color: #8b7bc4;
+      background: #24223f;
+    }
+
+    .option:has(input:checked) {
+      border-color: var(--purple);
+      background: #8b5cf61a;
+    }
+
+    .option input {
+      accent-color: var(--purple);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .option span {
+      flex: 1;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 11px;
+      padding: 11px 19px;
+      font-size: 13px;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #17132a;
+      background: linear-gradient(120deg, #c4b5fd, #f0abfc);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: #272d49;
+      border-color: #444b6c;
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .message {
+      color: #fda4af;
+      font-size: 13px;
+      min-height: 24px;
+      margin: 10px 0 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* کارت نتیجه */
+
+    .result-header {
+      text-align: center;
+      padding: 10px 0 22px;
+    }
+
+    .trophy {
+      font-size: 48px;
+      line-height: 1.5;
+    }
+
+    .result-header h2 {
+      font-size: clamp(23px, 4vw, 32px);
+      margin: 5px 0;
+      color: #ddd1ff;
+    }
+
+    .result-header p {
+      color: var(--muted);
+      margin: 5px 0;
+      font-size: 13px;
+    }
+
+    .profile-card {
+      border: 1px solid #7864b9;
+      background:
+        radial-gradient(ellipse at top left, #a78bfa24, transparent 60%),
+        #171a32;
+      padding: 22px;
+      border-radius: 17px;
+      margin-bottom: 25px;
+    }
+
+    .profile-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .profile-card p {
+      color: #c4c9e2;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .chart {
+      display: grid;
+      gap: 19px;
+      margin-top: 20px;
+    }
+
+    .chart-row {
+      display: grid;
+      gap: 7px;
+    }
+
+    .chart-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .chart-label strong {
+      font-weight: normal;
+    }
+
+    .chart-label .percent {
+      color: var(--muted);
+      direction: ltr;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-track {
+      height: 13px;
+      background: #303552;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0;
+      border-radius: 20px;
+      transition: width .7s ease;
+    }
+
+    .bar.competition { background: var(--pink); }
+    .bar.cooperation { background: var(--green); }
+    .bar.collection { background: #fbbf24; }
+    .bar.exploration { background: var(--blue); }
+
+    .bar-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .disclaimer {
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+      padding-top: 16px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #858bad;
+      padding: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 94%;
+        padding-top: 12px;
+      }
+
+      .panel {
+        padding: 17px;
+        border-radius: 16px;
+      }
+
+      .hero {
+        padding: 20px 5px;
+      }
+
+      .option {
+        padding: 11px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: #202038;
+      }
+
+      .hero,
+      #quizPanel,
+      #restartBtn,
+      #printBtn,
+      footer {
+        display: none !important;
+      }
+
+      .container {
+        width: 100%;
+        padding: 0;
+      }
+
+      #resultPanel {
+        display: block !important;
+        border: 0;
+        box-shadow: none;
+        background: white;
+        color: #202038;
+      }
+
+      .profile-card {
+        background: white;
+        border: 1px solid #aaa;
+      }
+
+      .profile-card p,
+      .muted,
+      .result-header p,
+      .bar-note,
+      .disclaimer {
+        color: #444;
+      }
+
+      .bar-track {
+        background: #e5e7eb;
+        border: 1px solid #ddd;
+      }
+
+      .result-header h2,
+      .profile-card h3 {
+        color: #202038;
+      }
+
+      .chart-label .percent {
+        color: #333;
+      }
+
+      .bar {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header class="hero">
+      <span class="badge">🎮 آزمون سرگرمی گیمرها</span>
+      <h1>GAME <span>QUEST</span></h1>
+      <p>
+        سبک بازی خودت را کشف کن!
+        به ۱۰ موقعیت بازی پاسخ بده و پروفایل مخصوص خودت را بساز.
+      </p>
+    </header>
+
+    <section class="panel" id="quizPanel">
+      <h2 class="panel-title">⚡ مأموریت تو آغاز می‌شود</h2>
+      <p class="muted">
+        در هر سؤال گزینه‌ای را انتخاب کن که بیشتر به سلیقه‌ات نزدیک است.
+      </p>
+
+      <div class="progress-info">
+        <span id="progressText">۰ از ۱۰ سؤال</span>
+        <span id="progressPercent">۰٪</span>
+      </div>
+
+      <div
+        class="progress-track"
+        role="progressbar"
+        aria-label="پیشرفت آزمون"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        id="progressTrack"
+      >
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <form id="quizForm">
+        <div id="questions"></div>
+
+        <p class="message" id="quizMessage" role="status"></p>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">
+            مشاهده نتیجه 🚀
+          </button>
+          <button class="btn btn-secondary" type="button" id="clearAnswers">
+            پاک کردن پاسخ‌ها
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel hidden" id="resultPanel" aria-live="polite">
+      <div class="result-header">
+        <div class="trophy" id="resultIcon">🏆</div>
+        <h2>پروفایل گیمر تو</h2>
+        <p>این نتیجه بر اساس پاسخ‌هایی است که انتخاب کردی.</p>
+      </div>
+
+      <div class="profile-card">
+        <span class="badge">PLAYER PROFILE</span>
+        <h3 id="profileName">کاوشگر کنجکاو</h3>
+        <p id="profileDescription"></p>
+      </div>
+
+      <h2 class="panel-title">📊 نمودار سبک‌های بازی</h2>
+      <p class="muted">
+        درصدها سهم هر سبک از مجموع امتیازهای به‌دست‌آمده را نشان می‌دهند.
+        مجموع درصدها تقریباً ۱۰۰٪ است.
+      </p>
+
+      <div class="chart" id="chart"></div>
+
+      <p class="disclaimer">
+        نکته: این آزمون فقط برای سرگرمی و آشنایی با سلیقه‌های مختلف بازی
+        طراحی شده است و یک آزمون علمی شخصیت‌شناسی نیست.
+      </p>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="restartBtn" type="button">
+          🔄 شروع دوباره
+        </button>
+        <button class="btn btn-secondary" id="printBtn" type="button">
+          🖨️ چاپ یا ذخیره نتیجه به‌صورت PDF
+        </button>
+      </div>
+    </section>
+
+    <footer>
+      GAME QUEST · یک پروژه آموزشی با HTML، CSS و JavaScript
+    </footer>
+
+  </main>
+
+  <script>
+    // هر گزینه می‌تواند به یک یا چند سبک امتیاز بدهد.
+    const styles = {
+      competition: {
+        name: "رقابت",
+        colorClass: "competition",
+        description: "از بردن، ثبت رکورد و بهتر شدن لذت می‌بری."
+      },
+      cooperation: {
+        name: "همکاری",
+        colorClass: "cooperation",
+        description: "از هماهنگی، کمک به دوستان و موفقیت تیمی لذت می‌بری."
+      },
+      collection: {
+        name: "جمع‌آوری",
+        colorClass: "collection",
+        description: "از پیدا کردن آیتم‌ها، پاداش‌ها و کامل کردن مجموعه‌ها لذت می‌بری."
+      },
+      exploration: {
+        name: "اکتشاف و مأموریت",
+        colorClass: "exploration",
+        description: "از کشف مکان‌های تازه، حل معما و انجام مأموریت‌ها لذت می‌بری."
+      }
+    };
+
+    const questions = [
+      {
+        title: "وقتی وارد یک مسابقه می‌شوی، کدام بخش جذاب‌تر است؟",
+        options: [
+          { text: "از بقیه بهتر عمل کنم و رکورد بزنم.", scores: { competition: 2 } },
+          { text: "با هم‌تیمی‌ها هماهنگ شوم و به گروه کمک کنم.", scores: { cooperation: 2 } },
+          { text: "آیتم‌ها و پاداش‌های بیشتری جمع کنم.", scores: { collection: 2 } },
+          { text: "بخش‌های جدید را کشف کنم و مأموریت‌ها را پیش ببرم.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "اگر یک مرحله خیلی سخت باشد، چه کار می‌کنی؟",
+        options: [
+          { text: "تمرین می‌کنم تا بهترین رکورد را ثبت کنم.", scores: { competition: 2 } },
+          { text: "از دوستانم کمک می‌گیرم و با هم راه‌حل پیدا می‌کنیم.", scores: { cooperation: 2 } },
+          { text: "دنبال تجهیزات و آیتم‌های بهتر می‌گردم.", scores: { collection: 2 } },
+          { text: "مسیرهای دیگر و روش‌های تازه را امتحان می‌کنم.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "کدام جایزه بیشتر خوشحالت می‌کند؟",
+        options: [
+          { text: "مدال نفر اول یا ثبت یک رکورد تازه.", scores: { competition: 2 } },
+          { text: "جایزه‌ای که با کمک اعضای تیم به دست آمده باشد.", scores: { cooperation: 2 } },
+          { text: "یک مجموعه کامل از آیتم‌های کمیاب.", scores: { collection: 2 } },
+          { text: "باز شدن یک منطقه مخفی و ناشناخته.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "در یک بازی گروهی معمولاً کدام نقش را ترجیح می‌دهی؟",
+        options: [
+          { text: "کسی که برای پیروزی و نتیجه بهتر تلاش می‌کند.", scores: { competition: 2 } },
+          { text: "کسی که از دوستانش پشتیبانی می‌کند.", scores: { cooperation: 2 } },
+          { text: "کسی که منابع و وسایل مورد نیاز را پیدا می‌کند.", scores: { collection: 2 } },
+          { text: "کسی که مسیرها و راه‌های تازه را پیدا می‌کند.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "در یک نقشه بزرگ، اول سراغ چه چیزی می‌روی؟",
+        options: [
+          { text: "مکان رقابت یا چالش اصلی.", scores: { competition: 2 } },
+          { text: "محلی که بتوانم با دوستانم همراه شوم.", scores: { cooperation: 2 } },
+          { text: "صندوق‌ها، منابع و آیتم‌های پنهان.", scores: { collection: 2 } },
+          { text: "منطقه‌هایی که هنوز ندیده‌ام.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "اگر فقط ۱۵ دقیقه برای بازی وقت داشته باشی، چه می‌کنی؟",
+        options: [
+          { text: "یک مسابقه سریع برای بهتر کردن رکوردم انجام می‌دهم.", scores: { competition: 2 } },
+          { text: "یک مرحله را با دوستم انجام می‌دهم.", scores: { cooperation: 2 } },
+          { text: "چند آیتم یا پاداش مشخص را جمع می‌کنم.", scores: { collection: 2 } },
+          { text: "یک مأموریت کوتاه و ناشناخته را امتحان می‌کنم.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "کدام اتفاق بیشتر کنجکاوت می‌کند؟",
+        options: [
+          { text: "اینکه چطور از بازیکنان دیگر بهتر شوم.", scores: { competition: 2 } },
+          { text: "اینکه چطور گروه ما هماهنگ‌تر عمل کند.", scores: { cooperation: 2 } },
+          { text: "اینکه چه آیتم‌های نادری هنوز پیدا نکرده‌ام.", scores: { collection: 2 } },
+          { text: "اینکه پشت در بسته یا مسیر ناشناخته چیست.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "در یک بازی ساخت‌وساز یا ماجراجویی، چه کاری را دوست داری؟",
+        options: [
+          { text: "ساختن چیزی که از نتیجه دیگران بهتر باشد.", scores: { competition: 1, collection: 1 } },
+          { text: "ساختن یک پایگاه همراه دوستان.", scores: { cooperation: 2 } },
+          { text: "جمع کردن منابع برای کامل کردن وسایل.", scores: { collection: 2 } },
+          { text: "ساختن مسیرهای تازه و کشف مناطق دوردست.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "وقتی یک بازی به‌روزرسانی جدید می‌گیرد، چه چیزی را بررسی می‌کنی؟",
+        options: [
+          { text: "تغییرات مسابقه‌ها و راه‌های بهتر برنده شدن.", scores: { competition: 2 } },
+          { text: "امکانات تازه‌ای که بتوانیم گروهی استفاده کنیم.", scores: { cooperation: 2 } },
+          { text: "آیتم‌ها، لباس‌ها و پاداش‌های اضافه‌شده.", scores: { collection: 2 } },
+          { text: "مراحل، نقشه‌ها و مأموریت‌های تازه.", scores: { exploration: 2 } }
+        ]
+      },
+      {
+        title: "اگر بتوانی یک ویژگی به بازی دلخواهت اضافه کنی، کدام را انتخاب می‌کنی؟",
+        options: [
+          { text: "جدول رتبه‌بندی و چالش رکوردها.", scores: { competition: 2 } },
+          { text: "مأموریت‌هایی که فقط با همکاری تیم انجام می‌شوند.", scores: { cooperation: 2 } },
+          { text: "مجموعه‌ای از آیتم‌های ویژه برای پیدا کردن.", scores: { collection: 2 } },
+          { text: "یک جهان بزرگ با رازها و مسیرهای متعدد.", scores: { exploration: 2 } }
+        ]
+      }
+    ];
+
+    const quizForm = document.getElementById("quizForm");
+    const questionsContainer = document.getElementById("questions");
+    const quizPanel = document.getElementById("quizPanel");
+    const resultPanel = document.getElementById("resultPanel");
+    const quizMessage = document.getElementById("quizMessage");
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressFill = document.getElementById("progressFill");
+    const progressTrack = document.getElementById("progressTrack");
+
+    const faNumber = (value) =>
+      new Intl.NumberFormat("fa-IR", {
+        maximumFractionDigits: 1
+      }).format(value);
+
+    // ساخت سؤال‌ها با استفاده از JavaScript
+    function renderQuestions() {
+      questionsContainer.replaceChildren();
+
+      questions.forEach((question, questionIndex) => {
+        const section = document.createElement("section");
+        section.className = "question";
+
+        const heading = document.createElement("h3");
+        const number = document.createElement("span");
+
+        number.className = "question-number";
+        number.textContent = `سؤال ${faNumber(questionIndex + 1)}:`;
+
+        heading.append(number, document.createTextNode(" " + question.title));
+
+        const options = document.createElement("div");
+        options.className = "options";
+
+        question.options.forEach((option, optionIndex) => {
+          const label = document.createElement("label");
+          label.className = "option";
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `question-${questionIndex}`;
+          input.value = String(optionIndex);
+          input.required = true;
+
+          const text = document.createElement("span");
+          text.textContent = option.text;
+
+          input.addEventListener("change", updateProgress);
+
+          label.append(input, text);
+          options.appendChild(label);
+        });
+
+        section.append(heading, options);
+        questionsContainer.appendChild(section);
+      });
+
+      updateProgress();
+    }
+
+    function getAnswers() {
+      return questions.map((question, index) => {
+        const selected = quizForm.querySelector(
+          `input[name="question-${index}"]:checked`
+        );
+
+        return selected ? Number(selected.value) : null;
+      });
+    }
+
+    function updateProgress() {
+      const answers = getAnswers();
+      const answered = answers.filter(value => value !== null).length;
+      const percent = Math.round(answered / questions.length * 100);
+
+      progressText.textContent =
+        `${faNumber(answered)} از ${faNumber(questions.length)} سؤال`;
+
+      progressPercent.textContent = `${faNumber(percent)}٪`;
+      progressFill.style.width = `${percent}%`;
+      progressTrack.setAttribute("aria-valuenow", String(percent));
+    }
+
+    // محاسبه امتیاز هر چهار بُعد
+    function calculateScores(answers) {
+      const scores = {
+        competition: 0,
+        cooperation: 0,
+        collection: 0,
+        exploration: 0
+      };
+
+      answers.forEach((answerIndex, questionIndex) => {
+        const selectedOption = questions[questionIndex].options[answerIndex];
+
+        Object.entries(selectedOption.scores).forEach(([style, points]) => {
+          scores[style] += points;
+        });
+      });
+
+      return scores;
+    }
+
+    // درصد هر سبک از مجموع امتیازها
+    function calculatePercentages(scores) {
+      const total = Object.values(scores).reduce(
+        (sum, score) => sum + score, 0
+      );
+
+      const percentages = {};
+      const keys = Object.keys(scores);
+
+      let assigned = 0;
+
+      keys.forEach((key, index) => {
+        if (index === keys.length - 1) {
+          percentages[key] = 100 - assigned;
+        } else {
+          percentages[key] = Math.round(scores[key] / total * 100);
+          assigned += percentages[key];
+        }
+      });
+
+      return percentages;
+    }
+
+    // انتخاب نام پروفایل بر اساس سبک غالب
+    function getProfile(scores) {
+      const entries = Object.entries(scores);
+      const highest = Math.max(...entries.map(([, score]) => score));
+
+      const leaders = entries
+        .filter(([, score]) => score === highest)
+        .map(([key]) => key);
+
+      if (leaders.length === 1) {
+        const key = leaders[0];
+
+        const profiles = {
+          competition: {
+            name: "قهرمان رقابت",
+            icon: "🏆",
+            description:
+              "تو از چالش، پیشرفت و رسیدن به نتیجه بهتر لذت می‌بری. " +
+              "رکوردها و فرصت‌های تازه برای بهتر شدن می‌توانند برایت جذاب باشند."
+          },
+          cooperation: {
+            name: "هم‌تیمی قابل اعتماد",
+            icon: "🤝",
+            description:
+              "برای تو هماهنگی و موفقیت گروه اهمیت زیادی دارد. " +
+              "تجربه‌های گروهی و کمک به هم‌تیمی‌ها می‌توانند لذت بازی را بیشتر کنند."
+          },
+          collection: {
+            name: "شکارچی آیتم‌ها",
+            icon: "💎",
+            description:
+              "پیدا کردن پاداش‌ها و کامل کردن مجموعه‌ها از جذابیت‌های اصلی توست. " +
+              "جزئیات کوچک و آیتم‌های کمیاب می‌توانند توجهت را جلب کنند."
+          },
+          exploration: {
+            name: "کاوشگر کنجکاو",
+            icon: "🧭",
+            description:
+              "کشف مکان‌های جدید و روبه‌رو شدن با ناشناخته‌ها برایت جذاب است. " +
+              "مأموریت‌های تازه و مسیرهای متفاوت می‌توانند سرگرمت کنند."
+          }
+        };
+
+        return profiles[key];
+      }
+
+      const names = leaders.map(key => styles[key].name);
+
+      const pairNames = {
+        "competition,cooperation": "رقابت‌جوی تیمی",
+        "collection,exploration": "کاوشگر گنج‌ها",
+        "competition,collection": "شکارچی رکورد و جایزه",
+        "cooperation,exploration": "ماجراجوی گروهی",
+        "competition,exploration": "قهرمان ماجراجو",
+        "cooperation,collection": "هم‌تیمی گنج‌یاب"
+      };
+
+      const pairKey = [...leaders].sort().join(",");
+      const profileName = leaders.length === 2
+        ? pairNames[pairKey]
+        : "گیمر چندسبکی";
+
+      return {
+        name: profileName || "گیمر چندسبکی",
+        icon: "✨",
+        description:
+          "چند سبک بازی برایت امتیاز یکسانی دارند: " +
+          names.join("، ") +
+          ". سلیقه تو می‌تواند ترکیبی از این تجربه‌ها باشد؛ " +
+          "لازم نیست فقط به یک سبک محدود شوی."
+      };
+    }
+
+    function renderChart(scores) {
+      const chart = document.getElementById("chart");
+      const percentages = calculatePercentages(scores);
+
+      chart.replaceChildren();
+
+      Object.entries(styles).forEach(([key, style]) => {
+        const row = document.createElement("div");
+        row.className = "chart-row";
+
+        const label = document.createElement("div");
+        label.className = "chart-label";
+
+        const title = document.createElement("strong");
+        title.textContent = style.name;
+
+        const percent = document.createElement("span");
+        percent.className = "percent";
+        percent.textContent = `${faNumber(percentages[key])}٪`;
+
+        label.append(title, percent);
+
+        const track = document.createElement("div");
+        track.className = "bar-track";
+        track.setAttribute("role", "img");
+        track.setAttribute(
+          "aria-label",
+          `${style.name}: ${faNumber(percentages[key])} درصد`
+        );
+
+        const bar = document.createElement("div");
+        bar.className = `bar ${style.colorClass}`;
+        bar.style.width = `${percentages[key]}%`;
+
+        track.appendChild(bar);
+
+        const note = document.createElement("div");
+        note.className = "bar-note";
+        note.textContent =
+          `امتیاز خام: ${faNumber(scores[key])} از ${faNumber(questions.length * 2)}`;
+
+        row.append(label, track, note);
+        chart.appendChild(row);
+      });
+    }
+
+    quizForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const answers = getAnswers();
+
+      if (answers.some(answer => answer === null)) {
+        quizMessage.textContent =
+          "برای دیدن نتیجه، لطفاً به همه سؤال‌ها پاسخ بده.";
+
+        const firstMissing = answers.findIndex(
+          answer => answer === null
+        );
+
+        const missingInput = quizForm.querySelector(
+          `input[name="question-${firstMissing}"]`
+        );
+
+        if (missingInput) {
+          missingInput.focus();
+          missingInput.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }
+
+        return;
+      }
+
+      quizMessage.textContent = "";
+
+      const scores = calculateScores(answers);
+      const profile = getProfile(scores);
+
+      document.getElementById("resultIcon").textContent = profile.icon;
+      document.getElementById("profileName").textContent = profile.name;
+      document.getElementById("profileDescription").textContent =
+        profile.description;
+
+      renderChart(scores);
+
+      quizPanel.classList.add("hidden");
+      resultPanel.classList.remove("hidden");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // پاک کردن پاسخ‌ها در صفحه آزمون
+    document.getElementById("clearAnswers").addEventListener("click", () => {
+      quizForm.reset();
+      quizMessage.textContent = "";
+      updateProgress();
+    });
+
+    // شروع دوباره از ابتدا
+    document.getElementById("restartBtn").addEventListener("click", () => {
+      quizForm.reset();
+      quizMessage.textContent = "";
+      updateProgress();
+
+      resultPanel.classList.add("hidden");
+      quizPanel.classList.remove("hidden");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // چاپ کارت نتیجه یا ذخیره آن با گزینه Save as PDF مرورگر
+    document.getElementById("printBtn").addEventListener("click", () => {
+      window.print();
+    });
+
+    renderQuestions();
+  </script>
+</body>
+</html>
